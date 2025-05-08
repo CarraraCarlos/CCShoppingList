@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     width: 230,
     height: 230,
     resizeMode: 'cover',
-    borderRadius:  115,
+    borderRadius: 115,
   },
   content: {
     flex: 1,
@@ -48,7 +48,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
   },
   title: {
-
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: 28,
+    marginBottom: 20,
+    textAlign: 'center',
   },
   text: {
     fontSize: 16,
