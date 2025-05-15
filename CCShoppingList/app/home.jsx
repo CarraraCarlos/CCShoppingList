@@ -1,10 +1,29 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
 
-export default function Home() 
-{
+export default function Home() {
+  const [TextInput, setTextInput] = useState('');
+  const [items, setItems] = useState([]);
+
+  const addItem = () => {
+    if (TextInput == '') {
+      Alert.alert(
+        'ocorreu um problema :)',
+        'Por favor, inorme o nome do produto'
+      )
+    } else { 
+       const newItem = {
+        id: Date.now() .tostring(),
+        name: TextInput,
+        bought: false
+       }
+       setItems([...items, newItem]);
+       setTextInput('');
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
@@ -17,7 +36,16 @@ export default function Home()
           <Ionicons name="trash" size={32} color="#fff"/>
         </View>
 
-        <View style={{ flex: 1 }}></View>
+        <FlatList
+          contentContainerStyle={{ padding: 20, paddingBottom: 100, color: '#fff' }}
+          data={items}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => 
+            <Text style={{ color:'#fff', fontSize: 20 }}>
+              {item.name}
+            </Text>
+          }
+        />
 
         <View style={styles.footer}>
           <View style={styles.inputContainer}>
@@ -26,6 +54,8 @@ export default function Home()
             fontSize={18}
             placeholderTextColor="#aeaeae"
             placeholder='Digite o nome do produto...'
+            value={TextInput}
+            onChangeText={(text) => setTextInput(text)}
             />
           </View>
           <TouchableOpacity style={styles.iconContainer}>
@@ -81,4 +111,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   }
-})
+})  
