@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
+import ItemList from '../../components/ItemList';
 
 
 export default function Home() {
@@ -41,9 +42,7 @@ export default function Home() {
           data={items}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => 
-            <Text style={{ color:'#fff', fontSize: 20 }}>
-              {item.name}
-            </Text>
+            <ItemList item={item}/>
           }
         />
 
