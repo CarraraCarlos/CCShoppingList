@@ -25,6 +25,58 @@ export default function Home() {
     }
   }
 
+  const markitemBought = itemId => {
+    const newItems = item.map((item) => {
+      if (item.id == itemId) {
+        return { ...item, bought: true }
+      }
+      return item;
+    });
+    setItems(newItems);
+  }
+  
+  const unmarkitemBought = itemId => {
+    const newItems = item.map((item) => {
+      if (item.id == itemId) {
+        return { ...item, bought: false }
+      }
+      return item;
+    });
+    setItems(newItems);
+  }
+
+  const removeItem = itemId => {
+    Alert.alert(
+      'Excluir Produto? ', 'Confirma a exclusão deste Produto?',
+      [
+        {
+          text: 'Sim!', onPress: () => {
+            const newItems = items.filter(item => item.id != itemId);
+            setItems(newItems);
+          }
+        },
+        {
+          text: 'Cancelar', style: 'cancel'
+        }
+      ]
+    );
+  }
+
+  const removeAll = () => {
+    Alert.alert(
+      'Limpar Lista?', '',
+      [
+        {
+          text: 'Sim!',
+          onPress: () => { setItems([]) }
+        },
+        {
+          text: 'Cancelar', style: 'cancel'
+        }
+      ]
+    )
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
@@ -34,7 +86,7 @@ export default function Home() {
       >
         <View style={styles.header}>
           <Text style={styles.title}>Lista de produtos</Text>
-          <Ionicons name="trash" size={32} color="#fff"/>
+          <Ionicons name="trash" size={32} color="#fff" onPress={removeAll}/>
         </View>
 
         <FlatList
