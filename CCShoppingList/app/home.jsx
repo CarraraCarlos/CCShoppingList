@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import ItemList from '../../components/ItemList';
+import ItemList from '../components/ItemList';
 
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
     }
   }
 
-  const markitemBought = itemId => {
+  const markItemBought = itemId => {
     const newItems = item.map((item) => {
       if (item.id == itemId) {
         return { ...item, bought: true }
@@ -35,7 +35,7 @@ export default function Home() {
     setItems(newItems);
   }
   
-  const unmarkitemBought = itemId => {
+  const unmarkItemBought = itemId => {
     const newItems = item.map((item) => {
       if (item.id == itemId) {
         return { ...item, bought: false }
@@ -94,7 +94,11 @@ export default function Home() {
           data={items}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => 
-            <ItemList item={item}/>
+            <ItemList
+            item={item}
+            markItem={markItemBought}
+            unmarkItem={unmarkItemBought}
+            removeItem={removeItem}/>
           }
         />
 
