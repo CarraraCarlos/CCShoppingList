@@ -1,22 +1,49 @@
-import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native'
+import React, { useState, useEffect, use } from 'react'
+import { Alert, FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import ItemList from '../components/ItemList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Home() {
   const [TextInput, setTextInput] = useState('');
   const [items, setItems] = useState([]);
+useEffect(() => {
+  getItemsFromDevice()
+}, [])
+
+useEffect(() => {
+  saveItemsToDevice();
+}, [items])
+
+  const getItemsFromDevice = async () => {
+    try {
+      const itemsMemory = await AsyncStorage.getItem('CCShoppingList');
+      if (items != null)
+      setItems(JSON.parse(itemsMemory))
+    } catch (error) {
+      console.log(`Erro: ${error}`)
+    }
+  }
+
+  const saveItemsToDevice = async () => {
+    try {
+      const itemsJson = JSON.stringify(items);
+      await AsyncStorage.setItem('CCShoppingList', itemsJson);
+    } catch (error) {
+      console.log(`Erro: ${error}`)
+    }
+  }
 
   const addItem = () => {
     if (TextInput == '') {
       Alert.alert(
         'ocorreu um problema :)',
-        'Por favor, inorme o nome do produto'
+        'Por favor, informe o nome do produto'
       )
     } else { 
        const newItem = {
-        id: Date.now() .tostring(),
+        id: Date.now() .toString(),
         name: TextInput,
         bought: false
        }
@@ -26,7 +53,7 @@ export default function Home() {
   }
 
   const markItemBought = itemId => {
-    const newItems = item.map((item) => {
+    const newItems = items.map((item) => {
       if (item.id == itemId) {
         return { ...item, bought: true }
       }
@@ -36,7 +63,7 @@ export default function Home() {
   }
   
   const unmarkItemBought = itemId => {
-    const newItems = item.map((item) => {
+    const newItems = items.map((item) => {
       if (item.id == itemId) {
         return { ...item, bought: false }
       }
