@@ -7,16 +7,18 @@ export default function Welcome() {
     <View style={styles.container}>
       <View style={styles.containerImage}>
         <Image
-        source={require('../assets/avatar.jpg')}
-        style={styles.avatar}/>  
+          source={require('../assets/avatar.jpg')}
+          style={styles.avatar}
+        />
       </View>
       <View style={styles.content}>
-        <Text style={styles.title}>CC Shopping List</Text>
+        <Text style={styles.title}>Shopping List</Text>
         <Text style={styles.text}>
-          Monte a sua lista de compras e não esqueça mais o que precisa comprar ao sair de casa!!!
+          Monte sua lista de compras e não esqueça mais o que
+          precisa comprar ao sair de casa!!!
         </Text>
         <Link style={styles.button} href={"/home"}>
-          <Text style={styles.buttonText}>Acessar!</Text>
+          <Text style={styles.buttonText}>Acessar</Text>
         </Link>
       </View>
       <StatusBar style="light" backgroundColor='#000' />
@@ -30,47 +32,49 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   containerImage: {
-    flex: 2,
+    flex: 1.9,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatar: {
-    width: 230,
-    height: 230,
-    resizeMode: 'cover',
-    borderRadius: 115,
-  },
-  content: {
-    flex: 1,
-    backgroundColor: '#dadada',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingHorizontal: '5%',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginTop: 28,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  text: {
-    fontSize: 16,
-    color: 'grey',
-  },
-  button: {
-    position: 'absolute',
-    backgroundColor: '#000',
-    bottom: '10%',
-    alignSelf: 'center',
-    borderRadius: 50,
-    paddingVertical: 15,
-    width: '60%',
-    textAlign: 'center',
-  },
-  buttonText: {
-    fontSize: 22,
-    color: '#fff',
-    fontWeight: 'bold',
-  }
-});
+avatar: {
+  width: 300,
+  height: 300,
+  resizeMode: 'cover',
+  borderRadius: 115,
+},
+content: {
+  flex: 1,
+  backgroundColor: '#dadada',
+  borderTopRightRadius: 35,
+  borderTopLeftRadius: 35,
+  paddingHorizontal: '5%'
+},
+title: {
+  fontSize: 30,
+  fontWeight: 'bold',
+  marginTop: 20,
+  marginBottom: 10,
+  textAlign: 'center',
+},
+text: {
+  fontSize: 16,
+  color: 'grey',
+  textAlign: 'center',
+},
+button: {
+  position: 'absolute',
+  backgroundColor: '#000',
+  bottom: '10%',
+  alignSelf: 'center',
+  borderRadius: 50,
+  paddingVertical: 14,
+  width: '40%',
+  textAlign: 'center',
+},
+buttonText: {
+  fontSize: 21,
+  color: '#fff',
+  fontWeight: 'bold',
+},
+
+  });

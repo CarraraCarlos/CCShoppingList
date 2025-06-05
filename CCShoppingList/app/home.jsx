@@ -1,26 +1,25 @@
-import React, { useState, useEffect, use } from 'react'
-import { Alert, FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Alert, FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import ItemList from '../components/ItemList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 export default function Home() {
-  const [TextInput, setTextInput] = useState('');
+  const [textInput, setTextInput] = useState('');
   const [items, setItems] = useState([]);
-useEffect(() => {
-  getItemsFromDevice()
-}, [])
+  useEffect(() => {
+    getItemsFromDevice()
+  }, [] )
 
-useEffect(() => {
-  saveItemsToDevice();
-}, [items])
+  useEffect(() => {
+    saveItemsToDevice();
+  }, [items])
 
   const getItemsFromDevice = async () => {
     try {
-      const itemsMemory = await AsyncStorage.getItem('CCShoppingList');
-      if (items != null)
-      setItems(JSON.parse(itemsMemory))
+      const itemsMemory = await AsyncStorage.getItem('shoppingList');
+      if (itemsMemory != null)
+        setItems(JSON.parse(itemsMemory))
     } catch (error) {
       console.log(`Erro: ${error}`)
     }
@@ -29,91 +28,89 @@ useEffect(() => {
   const saveItemsToDevice = async () => {
     try {
       const itemsJson = JSON.stringify(items);
-      await AsyncStorage.setItem('CCShoppingList', itemsJson);
+      await AsyncStorage.setItem('shoppingList', itemsJson);
     } catch (error) {
       console.log(`Erro: ${error}`)
     }
   }
 
   const addItem = () => {
-    if (TextInput == '') {
+    if (textInput == '') {
       Alert.alert(
-        'ocorreu um problema :)',
+        'Ocorreu um problema :(',
         'Por favor, informe o nome do produto'
-      )
-    } else { 
-       const newItem = {
-        id: Date.now() .toString(),
-        name: TextInput,
+      );
+    } else {
+      const newItem = {
+        id: Date.now().toString(),
+        name: textInput,
         bought: false
-       }
-       setItems([...items, newItem]);
-       setTextInput('');
+      }
+      setItems([...items, newItem]);
+      setTextInput('');
     }
-  }
+  } 
+      const markItemBougth= itemId => {
+        const newItems = items.map((item) => {
+          if (item.id == itemId) {
+            return{...item, bought: true }
 
-  const markItemBought = itemId => {
-    const newItems = items.map((item) => {
-      if (item.id == itemId) {
-        return { ...item, bought: true }
-      }
-      return item;
-    });
-    setItems(newItems);
-  }
-  
-  const unmarkItemBought = itemId => {
-    const newItems = items.map((item) => {
-      if (item.id == itemId) {
-        return { ...item, bought: false }
-      }
-      return item;
-    });
-    setItems(newItems);
-  }
-
-  const removeItem = itemId => {
-    Alert.alert(
-      'Excluir Produto? ', 'Confirma a exclusão deste Produto?',
-      [
-        {
-          text: 'Sim!', onPress: () => {
-            const newItems = items.filter(item => item.id != itemId);
-            setItems(newItems);
           }
-        },
-        {
-          text: 'Cancelar', style: 'cancel'
-        }
-      ]
-    );
-  }
+          return item;
+        });
+        setItems(newItems);
+      }
+      const unmarkItemBougth= itemId => {
+        const newItems = items.map((item) => {
+          if (item.id == itemId) {
+            return{...item, bought: false }
+            
+          }
+          return item;
+        });
+        setItems(newItems);
+      }
+      const removeItem = itemId => {
+        Alert.alert(
+          'Excluir Produto?', 'Confirma a exclusão deste produto?',
+          [
+            {
+              text:"Sim", onPress: () => {
+                const newItems = items.filter( item => item.id != itemId);
+                setItems(newItems);
+              }
+            },
+            {
+              text:'Cancerlar', style: 'cancel'
+            }
+          ]
 
-  const removeAll = () => {
-    Alert.alert(
-      'Limpar Lista?', '',
-      [
-        {
-          text: 'Sim!',
-          onPress: () => { setItems([]) }
-        },
-        {
-          text: 'Cancelar', style: 'cancel'
-        }
-      ]
-    )
-  }
-
+        );
+      }
+      const removeAll = () => {
+Alert.alert(
+  'Limpar Lista?', 'Confirma a exclusão de todos os produtos?',
+  [
+    {
+      text:'Sim',
+      onPress:() => {setItems([])}
+    },
+    {
+      text: "Cancelar", style: "cancel"
+    }
+  ]
+)
+      }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
-      source={require('../assets/background.jpg')}
-      style={{ flex: 1, justifyContent: 'flex-start' }}
-      resizeMode='repeat'
+        source={require('../assets/background.jpg')}
+        style={{ flex: 1, justifyContent: 'flex-start' }}
+        resizeMode='repeat'
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Lista de produtos</Text>
-          <Ionicons name="trash" size={32} color="#fff" onPress={removeAll}/>
+          <Text style={styles.title}>Lista de Produtos</Text>
+          <Ionicons name="trash" size={32} color="#fff"  onPress={removeAll}/>
         </View>
 
         <FlatList
@@ -121,30 +118,31 @@ useEffect(() => {
           data={items}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => 
-            <ItemList
-            item={item}
-            markItem={markItemBought}
-            unmarkItem={unmarkItemBought}
-            removeItem={removeItem}/>
+            <ItemList item={item}
+          markItem={markItemBougth}
+          unmarkItem={unmarkItemBougth}
+          removeItem={removeItem}
+            />
           }
         />
 
         <View style={styles.footer}>
           <View style={styles.inputContainer}>
-            <TextInput
-            color="#fff"
-            fontSize={18}
-            placeholderTextColor="#aeaeae"
-            placeholder='Digite o nome do produto...'
-            value={TextInput}
-            onChangeText={(text) => setTextInput(text)}
+            <TextInput 
+              color="#fff"
+              fontSize={18}
+              placeholderTextColor="#aeaeae"
+              placeholder='Digite o nome do produto...'
+              value={textInput}
+              onChangeText={(text) => setTextInput(text)}
             />
           </View>
-          <TouchableOpacity style={styles.iconContainer}>
-            <Ionicons name="add" size={36} color="#fff"/>
+          <TouchableOpacity style={styles.iconContainer} onPress={addItem}>
+            <Ionicons name="add" size={36} color="#fff" />
           </TouchableOpacity>
         </View>
-     </ImageBackground>
+
+      </ImageBackground>
     </SafeAreaView>
   )
 }
@@ -158,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000000c0',
     borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30 
+    borderBottomLeftRadius: 30
   },
   title: {
     fontSize: 26,
@@ -191,6 +189,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     borderRadius: 25,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   }
-})  
+})
